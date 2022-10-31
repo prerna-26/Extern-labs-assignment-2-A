@@ -1,0 +1,48 @@
+
+const express = require('express')
+
+
+const app = express();
+
+
+const zip = require('express-zip');
+
+
+const folderPath = __dirname+'/Files';
+
+
+app.get('/single',function(req,res) {
+	console.log('single file');
+	
+	
+	res.download(folderPath+'/single_file.txt', function(err) {
+		if(err) {
+			console.log(err);
+		}
+	})
+})
+
+
+app.get('/multiple', function(req, res) {
+	console.log('Multiple file download')
+
+	
+	res.zip([
+		{ path: folderPath+'/multiple_one_file.txt',
+			name: 'one_file.txt'},
+		{ path: folderPath+'/multiple_two_file.txt',
+			name: 'two_file.txt'},
+		{ path: folderPath+'/multiple_three_file.txt',
+			name: 'three_file.txt'}
+	])
+})
+
+
+app.get('/', function(req, res){
+	res.sendFile(__dirname+'/index.html');
+})
+
+
+app.listen(3000,function(req,res){
+	console.log('Server started to listen at 3000');
+})
